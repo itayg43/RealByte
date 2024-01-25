@@ -1,37 +1,21 @@
-import { useState } from "react";
 import axios from "axios";
+
+import useSelectImage from "./hooks/useSelectImage";
 
 const apiClient = axios.create({
   baseURL: "",
 });
 
 const App = () => {
-  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
-  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
-
-  const handleImageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const imageFile = e.target.files[0];
-
-      setSelectedImageFile(imageFile);
-
-      const reader = new FileReader();
-      reader.readAsDataURL(imageFile);
-      reader.addEventListener("load", (e) => {
-        if (e.target?.result && typeof e.target.result === "string") {
-          setSelectedImageUrl(e.target.result);
-        }
-      });
-    }
-  };
+  const { imageFile, imageUrl, handleImageFileChange } = useSelectImage();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (selectedImageFile === null) return;
+    if (imageFile === null) return;
 
     const formData = new FormData();
-    formData.append("file", selectedImageFile, selectedImageFile.name);
+    formData.append("file", imageFile, imageFile.name);
 
     await apiClient.post("", formData, {
       headers: {
@@ -45,29 +29,29 @@ const App = () => {
       <div className="content-container-sm">
         <h1 className="text-xxl text-center">Real Estate</h1>
 
-        {selectedImageUrl && (
+        {imageUrl && (
           // eslint-disable-next-line jsx-a11y/img-redundant-alt
-          <img src={selectedImageUrl} alt="selected image" />
+          <img src={imageUrl} alt="selected image" />
         )}
 
         <form className="form-container" onSubmit={handleSubmit}>
           <fieldset>
             <label htmlFor="image-input" className="image-input">
-              {selectedImageFile ? "Change Image" : "Select Image"}
+              {imageFile ? "Change Image" : "Select Image"}
             </label>
 
             <input
               id="image-input"
               type="file"
               accept="image/*"
-              onChange={handleImageInputChange}
+              onChange={handleImageFileChange}
             />
           </fieldset>
 
           <button
             className="button"
             type="submit"
-            disabled={selectedImageFile === null}
+            disabled={imageFile === null}
           >
             Upload
           </button>
