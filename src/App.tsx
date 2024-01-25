@@ -6,24 +6,32 @@ const apiClient = axios.create({
 });
 
 const App = () => {
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
   const handleImageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setSelectedImage(file);
-      setSelectedImageUrl(URL.createObjectURL(file));
+      const imageFile = e.target.files[0];
+
+      setSelectedImageFile(imageFile);
+
+      const reader = new FileReader();
+      reader.readAsDataURL(imageFile);
+      reader.addEventListener("load", (e) => {
+        if (e.target?.result && typeof e.target.result === "string") {
+          setSelectedImageUrl(e.target.result);
+        }
+      });
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (selectedImage === null) return;
+    if (selectedImageFile === null) return;
 
     const formData = new FormData();
-    formData.append("file", selectedImage);
+    formData.append("file", selectedImageFile, selectedImageFile.name);
 
     await apiClient.post("", formData, {
       headers: {
@@ -45,7 +53,7 @@ const App = () => {
         <form className="form-container" onSubmit={handleSubmit}>
           <fieldset>
             <label htmlFor="image-input" className="image-input">
-              {selectedImage ? "Change Image" : "Select Image"}
+              {selectedImageFile ? "Change Image" : "Select Image"}
             </label>
 
             <input
@@ -59,7 +67,7 @@ const App = () => {
           <button
             className="button"
             type="submit"
-            disabled={selectedImage === null}
+            disabled={selectedImageFile === null}
           >
             Upload
           </button>
