@@ -11,9 +11,9 @@ const App = () => {
 
   const handleImageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const firstFile = e.target.files[0];
-      setSelectedImage(firstFile);
-      setSelectedImageUrl(URL.createObjectURL(firstFile));
+      const file = e.target.files[0];
+      setSelectedImage(file);
+      setSelectedImageUrl(URL.createObjectURL(file));
     }
   };
 
