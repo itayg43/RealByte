@@ -20,38 +20,39 @@ const App = () => {
 
   return (
     <main>
-      <div className="container">
-        <div className="content-container-sm">
-          <h1 className="text-xxl text-center">Real Estate</h1>
+      <div className="content-container-sm">
+        <h1 className="text-xxl text-center">Real Estate</h1>
 
-          {imageUrl && (
-            // eslint-disable-next-line jsx-a11y/img-redundant-alt
-            <img src={imageUrl} alt="selected image" />
-          )}
+        {imageUrl ? (
+          <img className="logo" src={imageUrl} alt="selected logo" />
+        ) : (
+          <div className="logo-placeholder">
+            <p>No Logo Selected</p>
+          </div>
+        )}
 
-          <form className="form-container" onSubmit={handleSubmit}>
-            <fieldset>
-              <label htmlFor="image-input" className="image-input">
-                {imageFile ? "Change Logo" : "Select Logo"}
-              </label>
+        <form className="form-container" onSubmit={handleSubmit}>
+          <fieldset>
+            <label htmlFor="logo-input" className="logo-input">
+              {imageFile ? "Change Logo" : "Select Logo"}
+            </label>
 
-              <input
-                id="image-input"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-            </fieldset>
+            <input
+              id="logo-input"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </fieldset>
 
-            <button
-              className="button"
-              type="submit"
-              disabled={imageFile === null}
-            >
-              Upload
-            </button>
-          </form>
-        </div>
+          <button
+            className="btn btn-blue"
+            type="submit"
+            disabled={imageFile === null}
+          >
+            Upload
+          </button>
+        </form>
       </div>
     </main>
   );
