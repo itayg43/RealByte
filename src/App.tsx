@@ -1,27 +1,21 @@
-import axios from "axios";
-
-import useSelectImage from "./hooks/useSelectImage";
-
-const apiClient = axios.create({
-  baseURL: "",
-});
+import apiService from "./services/apiService";
+import useImagePicker from "./hooks/useImagePicker";
 
 const App = () => {
-  const { imageFile, imageUrl, handleImageFileChange } = useSelectImage();
+  const { imageFile, imageUrl, handleImageChange } = useImagePicker();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (imageFile === null) return;
+    if (imageFile === null) {
+      return;
+    }
 
-    const formData = new FormData();
-    formData.append("file", imageFile, imageFile.name);
-
-    await apiClient.post("", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    try {
+      await apiService.uploadImage(imageFile);
+    } catch (error: any) {
+      alert(error?.message);
+    }
   };
 
   return (
@@ -44,7 +38,7 @@ const App = () => {
               id="image-input"
               type="file"
               accept="image/*"
-              onChange={handleImageFileChange}
+              onChange={handleImageChange}
             />
           </fieldset>
 
