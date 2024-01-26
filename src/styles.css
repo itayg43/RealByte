@@ -24,6 +24,10 @@ input[type="file"] {
   display: none;
 }
 
+.container {
+  margin-top: 100px;
+}
+
 .content-container-sm {
   max-width: 600px;
   margin: 0 auto;
@@ -34,6 +38,7 @@ input[type="file"] {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-bottom: 30px;
 }
 
 .image-input {

@@ -20,36 +20,38 @@ const App = () => {
 
   return (
     <main>
-      <div className="content-container-sm">
-        <h1 className="text-xxl text-center">Real Estate</h1>
+      <div className="container">
+        <div className="content-container-sm">
+          <h1 className="text-xxl text-center">Real Estate</h1>
 
-        {imageUrl && (
-          // eslint-disable-next-line jsx-a11y/img-redundant-alt
-          <img src={imageUrl} alt="selected image" />
-        )}
+          {imageUrl && (
+            // eslint-disable-next-line jsx-a11y/img-redundant-alt
+            <img src={imageUrl} alt="selected image" />
+          )}
 
-        <form className="form-container" onSubmit={handleSubmit}>
-          <fieldset>
-            <label htmlFor="image-input" className="image-input">
-              {imageFile ? "Change Image" : "Select Image"}
-            </label>
+          <form className="form-container" onSubmit={handleSubmit}>
+            <fieldset>
+              <label htmlFor="image-input" className="image-input">
+                {imageFile ? "Change Logo" : "Select Logo"}
+              </label>
 
-            <input
-              id="image-input"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-          </fieldset>
+              <input
+                id="image-input"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </fieldset>
 
-          <button
-            className="button"
-            type="submit"
-            disabled={imageFile === null}
-          >
-            Upload
-          </button>
-        </form>
+            <button
+              className="button"
+              type="submit"
+              disabled={imageFile === null}
+            >
+              Upload
+            </button>
+          </form>
+        </div>
       </div>
     </main>
   );
