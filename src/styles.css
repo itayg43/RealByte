@@ -26,12 +26,12 @@ input[type="file"] {
   padding: 0 15px;
 }
 
-.logo {
+.image {
   max-width: 100%;
   height: auto;
 }
 
-.logo-placeholder {
+.image-placeholder {
   background: white;
   padding: 10px;
   margin-bottom: 10px;
@@ -47,7 +47,7 @@ input[type="file"] {
   margin-bottom: 30px;
 }
 
-.logo-input {
+.image-input {
   display: inline-block;
   padding: 13px 20px;
   background: #ddd;
@@ -57,7 +57,7 @@ input[type="file"] {
   transition: 0.5s;
 }
 
-.logo-input:hover {
+.image-input:hover {
   opacity: 0.8;
 }
 

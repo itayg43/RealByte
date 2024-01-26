@@ -24,21 +24,22 @@ const App = () => {
         <h1 className="text-xxl text-center">Real Estate</h1>
 
         {imageUrl ? (
-          <img className="logo" src={imageUrl} alt="selected logo" />
+          // eslint-disable-next-line jsx-a11y/img-redundant-alt
+          <img className="image" src={imageUrl} alt="selected image" />
         ) : (
-          <div className="logo-placeholder">
-            <p>No Logo Selected</p>
+          <div className="image-placeholder">
+            <p>No Image Selected</p>
           </div>
         )}
 
         <form className="form-container" onSubmit={handleSubmit}>
           <fieldset>
-            <label htmlFor="logo-input" className="logo-input">
-              {imageFile ? "Change Logo" : "Select Logo"}
+            <label htmlFor="image-input" className="image-input">
+              {imageFile ? "Change Image" : "Select Image"}
             </label>
 
             <input
-              id="logo-input"
+              id="image-input"
               type="file"
               accept="image/*"
               onChange={handleImageChange}
