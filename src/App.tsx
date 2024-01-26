@@ -28,7 +28,7 @@ const App = () => {
           <img className="image" src={imageUrl} alt="selected image" />
         ) : (
           <div className="image-placeholder">
-            <p>No Image Selected</p>
+            <span>No Image Selected</span>
           </div>
         )}
 

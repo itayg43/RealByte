@@ -10,7 +10,7 @@ export const formDataConfig: AxiosRequestConfig = {
   },
 };
 
-export enum ApiClientRoute {
+export enum ApiRoute {
   uploadImage = "/upload-image",
 }
 
