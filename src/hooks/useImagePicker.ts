@@ -20,7 +20,7 @@ const useImagePicker = () => {
     }
 
     if (f.size > MAX_IMAGE_SIZE_IN_MB) {
-      alert("Image with maximum size of 5MB is allowed");
+      alert("Images with maximum size of 5MB is allowed");
       return;
     }
 
