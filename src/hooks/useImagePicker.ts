@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png"];
 const MAX_IMAGE_SIZE_IN_MB = 5 * 1024 * 1024;
@@ -14,19 +14,28 @@ const useImagePicker = () => {
 
     const f = e.target.files[0];
 
-    if (ALLOWED_IMAGE_TYPES.includes(f.type) === false) {
+    if (validateType(f.type) === false) {
       alert("Only JPEG, and PNG images are allowed");
       return;
     }
 
-    if (f.size > MAX_IMAGE_SIZE_IN_MB) {
+    if (validateSize(f.size) === false) {
       alert("Images with maximum size of 5MB is allowed");
       return;
     }
 
     setFile(f);
+  }, []);
 
-    const reader = new FileReader();
+  useEffect(() => {
+    let isCancel = false;
+    let reader: FileReader | null;
+
+    if (file === null) {
+      return;
+    }
+
+    reader = new FileReader();
     reader.onload = (e) => {
       if (e.target === null) {
         return;
@@ -34,12 +43,21 @@ const useImagePicker = () => {
 
       const { result } = e.target;
 
-      if (result !== null && typeof result === "string") {
+      if (isCancel === false && result !== null && typeof result === "string") {
         setUrl(result);
       }
     };
-    reader.readAsDataURL(f);
-  }, []);
+    reader.readAsDataURL(file);
+
+    return () => {
+      isCancel = true;
+
+      // 1 === LOADING
+      if (reader !== null && reader.readyState === 1) {
+        reader.abort();
+      }
+    };
+  }, [file]);
 
   return {
     imageFile: file,
@@ -49,3 +67,11 @@ const useImagePicker = () => {
 };
 
 export default useImagePicker;
+
+function validateType(type: string) {
+  return ALLOWED_IMAGE_TYPES.includes(type);
+}
+
+function validateSize(size: number) {
+  return size < MAX_IMAGE_SIZE_IN_MB;
+}

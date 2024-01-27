@@ -41,7 +41,7 @@ const App = () => {
             <input
               id="image-input"
               type="file"
-              accept="image/*"
+              accept="image/jpeg, image/png"
               onChange={handleImageChange}
             />
           </fieldset>
