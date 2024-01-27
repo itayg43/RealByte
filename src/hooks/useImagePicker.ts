@@ -1,5 +1,8 @@
 import { useCallback, useState } from "react";
 
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png"];
+const MAX_IMAGE_SIZE_IN_MB = 5 * 1024 * 1024;
+
 const useImagePicker = () => {
   const [file, setFile] = useState<File | null>(null);
   const [url, setUrl] = useState<string | null>(null);
@@ -11,11 +14,21 @@ const useImagePicker = () => {
 
     const f = e.target.files[0];
 
+    if (ALLOWED_IMAGE_TYPES.includes(f.type) === false) {
+      alert("Only JPEG, and PNG images are allowed");
+      return;
+    }
+
+    if (f.size > MAX_IMAGE_SIZE_IN_MB) {
+      alert("Image with maximum size of 5MB is allowed");
+      return;
+    }
+
     setFile(f);
 
     const reader = new FileReader();
     reader.readAsDataURL(f);
-    reader.addEventListener("load", (e) => {
+    reader.onload = (e) => {
       if (e.target === null) {
         return;
       }
@@ -25,7 +38,7 @@ const useImagePicker = () => {
       if (result !== null && typeof result === "string") {
         setUrl(result);
       }
-    });
+    };
   }, []);
 
   return {
