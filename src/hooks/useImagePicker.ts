@@ -27,7 +27,6 @@ const useImagePicker = () => {
     setFile(f);
 
     const reader = new FileReader();
-    reader.readAsDataURL(f);
     reader.onload = (e) => {
       if (e.target === null) {
         return;
@@ -39,6 +38,7 @@ const useImagePicker = () => {
         setUrl(result);
       }
     };
+    reader.readAsDataURL(f);
   }, []);
 
   return {
