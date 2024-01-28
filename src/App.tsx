@@ -1,59 +1,104 @@
+import { useEffect, useState } from "react";
+
+import type { RequestStatus } from "./utils/types";
 import apiService from "./services/apiService";
 import useImagePicker, { ALLOWED_IMAGE_TYPES } from "./hooks/useImagePicker";
 
+const REDIRECT_TIME_OUT_IN_MILLIS = 3000;
+const REDIRECT_TIME_OUT_IN_SECONDS = REDIRECT_TIME_OUT_IN_MILLIS / 1000;
+const WHATSAPP_URL = "https://wa.me/972546203978";
+
 const App = () => {
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>("idle");
+
+  const [userPhoneNumber, setUserPhoneNumber] = useState<string | null>(null);
+
   const { imageFile, imageUrl, handleImageChange } = useImagePicker();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (imageFile === null) {
+    if (userPhoneNumber === null || imageFile === null) {
       return;
     }
 
     try {
-      await apiService.uploadImage(imageFile);
+      setRequestStatus("loading");
+      await apiService.uploadImage(userPhoneNumber, imageFile);
+      setRequestStatus("succeeded");
     } catch (error: any) {
+      setRequestStatus("failed");
       alert(error?.message);
     }
   };
 
+  useEffect(() => {
+    const pn = new URLSearchParams(document.location.search).get("phoneNumber");
+    setUserPhoneNumber(pn);
+  }, []);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout | null;
+
+    if (requestStatus === "succeeded") {
+      timeout = setTimeout(() => {
+        window.location.replace(WHATSAPP_URL);
+      }, REDIRECT_TIME_OUT_IN_MILLIS);
+    }
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [requestStatus]);
+
   return (
     <main>
       <div className="content-container-sm">
-        <h1 className="text-xxl text-center">Real Estate</h1>
+        <h1 className="text-xxl text-center">Real Byte</h1>
 
-        {imageUrl ? (
-          // eslint-disable-next-line jsx-a11y/img-redundant-alt
-          <img className="image" src={imageUrl} alt="selected image" />
-        ) : (
-          <div className="image-placeholder">
-            <span>No Image Selected</span>
-          </div>
+        {requestStatus === "succeeded" && (
+          <p className="text-center">
+            Upload succeeded! You will be redirected to WhatsApp in{" "}
+            {REDIRECT_TIME_OUT_IN_SECONDS} seconds...
+          </p>
         )}
 
-        <form className="form-container" onSubmit={handleSubmit}>
-          <fieldset>
-            <label htmlFor="image-input" className="image-input">
-              {imageFile ? "Change Image" : "Select Image"}
-            </label>
+        {requestStatus !== "succeeded" && (
+          <>
+            {imageUrl && (
+              // eslint-disable-next-line jsx-a11y/img-redundant-alt
+              <img className="image" src={imageUrl} alt="selected image" />
+            )}
 
-            <input
-              id="image-input"
-              type="file"
-              accept={ALLOWED_IMAGE_TYPES.join(",")}
-              onChange={handleImageChange}
-            />
-          </fieldset>
+            <form className="form-container" onSubmit={handleSubmit}>
+              <fieldset>
+                <label htmlFor="image-input" className="image-input">
+                  {imageFile ? "Change Logo" : "Select Logo"}
+                </label>
 
-          <button
-            className="btn btn-blue"
-            type="submit"
-            disabled={imageFile === null}
-          >
-            Upload
-          </button>
-        </form>
+                <input
+                  id="image-input"
+                  type="file"
+                  accept={ALLOWED_IMAGE_TYPES.join(",")}
+                  onChange={handleImageChange}
+                />
+              </fieldset>
+
+              {imageFile && (
+                <button
+                  className="btn btn-blue"
+                  type="submit"
+                  disabled={requestStatus === "loading"}
+                >
+                  {requestStatus === "loading" && <span className="loader" />}
+                  UPLOAD
+                </button>
+              )}
+            </form>
+          </>
+        )}
       </div>
     </main>
   );

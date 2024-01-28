@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://4ceb-109-65-129-142.ngrok-free.app/api",
 });
 
 export const formDataConfig: AxiosRequestConfig = {
@@ -11,7 +11,7 @@ export const formDataConfig: AxiosRequestConfig = {
 };
 
 export enum ApiRoute {
-  uploadImage = "/upload-image",
+  uploadLogo = "/upload-logo",
 }
 
 export default apiClient;
