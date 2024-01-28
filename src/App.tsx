@@ -1,5 +1,5 @@
 import apiService from "./services/apiService";
-import useImagePicker from "./hooks/useImagePicker";
+import useImagePicker, { ALLOWED_IMAGE_TYPES } from "./hooks/useImagePicker";
 
 const App = () => {
   const { imageFile, imageUrl, handleImageChange } = useImagePicker();
@@ -41,7 +41,7 @@ const App = () => {
             <input
               id="image-input"
               type="file"
-              accept="image/jpeg, image/png"
+              accept={ALLOWED_IMAGE_TYPES.join(",")}
               onChange={handleImageChange}
             />
           </fieldset>

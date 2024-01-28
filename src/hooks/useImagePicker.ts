@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png"];
+export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png"];
 const MAX_IMAGE_SIZE_IN_BYTES = 5 * 1024 * 1024;
 
 const useImagePicker = () => {
