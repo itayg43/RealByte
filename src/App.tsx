@@ -47,7 +47,7 @@ const App = () => {
     }
 
     return () => {
-      if (timeout) {
+      if (timeout !== null) {
         clearTimeout(timeout);
       }
     };
