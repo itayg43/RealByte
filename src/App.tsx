@@ -6,7 +6,6 @@ import useImagePicker, { ALLOWED_IMAGE_TYPES } from "./hooks/useImagePicker";
 
 const REDIRECT_TIME_OUT_IN_MILLIS = 3000;
 const REDIRECT_TIME_OUT_IN_SECONDS = REDIRECT_TIME_OUT_IN_MILLIS / 1000;
-const WHATSAPP_URL = "https://wa.me/972546203978";
 
 const App = () => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("idle");
@@ -42,7 +41,9 @@ const App = () => {
 
     if (requestStatus === "succeeded") {
       timeout = setTimeout(() => {
-        window.location.replace(WHATSAPP_URL);
+        window.location.replace(
+          process.env.REACT_APP_WHATSAPP_URL ?? window.location.href
+        );
       }, REDIRECT_TIME_OUT_IN_MILLIS);
     }
 

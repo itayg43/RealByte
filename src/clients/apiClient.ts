@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 
 const apiClient = axios.create({
-  baseURL: "https://4ceb-109-65-129-142.ngrok-free.app/api",
+  baseURL: `${process.env.REACT_APP_BACKEND_BASE_URL}/api`,
 });
 
 export const formDataConfig: AxiosRequestConfig = {
