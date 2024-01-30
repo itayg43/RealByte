@@ -6,8 +6,6 @@ import UploadLogoForm, {
   type UploadLogoFormInputs,
 } from "../components/forms/UploadLogoForm";
 
-// ?phoneNumber=%2B4jE9InJLL5Pxom8NcfxTT99dnXHTJDgjosFShWZEOM%3D
-
 const REDIRECT_TIME_OUT_IN_MILLIS = 3000;
 
 const UploadLogoPage = () => {
