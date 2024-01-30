@@ -32,7 +32,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    const pn = new URLSearchParams(document.location.search).get("phoneNumber");
+    const searchParams = new URLSearchParams(document.location.search);
+    const pn = searchParams.get("phoneNumber");
+    console.log(pn);
     setUserPhoneNumber(pn);
   }, []);
 
