@@ -11,16 +11,7 @@ body {
   overflow-x: hidden;
 }
 
-fieldset {
-  border: none;
-}
-
-input[type="file"] {
-  display: none;
-}
-
 .content-container-sm {
-  margin-top: 100px;
   max-width: 600px;
   margin: 0 auto;
   padding: 0 15px;
@@ -29,7 +20,7 @@ input[type="file"] {
 .image {
   max-width: 100%;
   height: auto;
-  border: 1px black solid;
+  border: 1px #ccc solid;
   border-radius: 10px;
   margin-bottom: 10px;
 }
@@ -39,6 +30,14 @@ input[type="file"] {
   flex-direction: column;
   gap: 10px;
   margin-bottom: 30px;
+}
+
+.form-container fieldset {
+  border: none;
+}
+
+.form-container input[type="file"] {
+  display: none;
 }
 
 .image-input {
@@ -110,4 +109,9 @@ input[type="file"] {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.error-message {
+  color: #e50914;
+  padding: 5px;
 }

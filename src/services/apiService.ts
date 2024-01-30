@@ -1,6 +1,6 @@
 import apiClient, { formDataConfig, ApiRoute } from "../clients/apiClient";
 
-const uploadImage = async (userPhoneNumber: string, image: File) => {
+const uploadLogo = async (userPhoneNumber: string, image: File) => {
   try {
     const formData = new FormData();
     formData.append("phoneNumber", userPhoneNumber);
@@ -15,5 +15,5 @@ const uploadImage = async (userPhoneNumber: string, image: File) => {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  uploadImage,
+  uploadLogo,
 };
