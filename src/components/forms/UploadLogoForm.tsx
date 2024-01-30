@@ -65,7 +65,7 @@ const UploadLogoForm = ({ onSubmit }: Props) => {
     if (selectedFile && selectedFile[0]) {
       return selectedFile[0].type.includes("image") ? (
         <img
-          className="image-preview"
+          className="image-file-preview"
           src={URL.createObjectURL(selectedFile[0])}
           alt="selected file preview"
         />
@@ -89,11 +89,16 @@ const UploadLogoForm = ({ onSubmit }: Props) => {
 
       <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
         <fieldset>
-          <label htmlFor="image-input" className="image-input">
+          <label htmlFor="file-input" className="file-input">
             {selectedFile && selectedFile[0] ? "Change Logo" : "Select Logo"}
           </label>
 
-          <input id="image-input" type="file" {...register("file")} />
+          <input
+            id="file-input"
+            type="file"
+            accept={ALLOWED_FILE_TYPES.join(", ")}
+            {...register("file")}
+          />
 
           {errors.file && errors.file.message && (
             <p className="error-message">{errors.file.message}</p>
