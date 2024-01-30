@@ -17,7 +17,7 @@ body {
   padding: 0 15px;
 }
 
-.image {
+.image-preview {
   max-width: 100%;
   height: auto;
   border: 1px #ccc solid;
