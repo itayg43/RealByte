@@ -7,6 +7,13 @@ const MAX_IMAGE_SIZE_IN_BYTES = 5 * 1024 * 1024;
 
 const validationSchema = z.object({
   logo: z.custom<FileList>().superRefine((files, ctx) => {
+    if (files.length === 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Required",
+      });
+    }
+
     if (IMAGE_TYPES.includes(files[0]?.type) === false) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
