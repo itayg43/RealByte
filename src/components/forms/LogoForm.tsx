@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-const IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 const MAX_IMAGE_SIZE_IN_BYTES = 5 * 1024 * 1024;
 
 const validationSchema = z.object({
@@ -14,7 +15,7 @@ const validationSchema = z.object({
       });
     }
 
-    if (IMAGE_TYPES.includes(files[0]?.type) === false) {
+    if (ALLOWED_IMAGE_TYPES.includes(files[0]?.type) === false) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Only JPEG, JPG, and PNG images allowed",
@@ -48,10 +49,16 @@ const LogoForm = ({ onSubmit }: Props) => {
   });
 
   const selectedLogo = watch("logo");
-  const selectedLogoPreview =
-    selectedLogo && selectedLogo[0]
-      ? URL.createObjectURL(selectedLogo[0])
-      : null;
+
+  const [selectedLogoPreview, setSelectedLogoPreview] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (selectedLogo && selectedLogo[0]) {
+      setSelectedLogoPreview(URL.createObjectURL(selectedLogo[0]));
+    }
+  }, [selectedLogo]);
 
   return (
     <>
@@ -68,7 +75,7 @@ const LogoForm = ({ onSubmit }: Props) => {
           <input
             id="image-input"
             type="file"
-            accept={IMAGE_TYPES.join(", ")}
+            accept={ALLOWED_IMAGE_TYPES.join(", ")}
             {...register("logo")}
           />
 
