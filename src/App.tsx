@@ -18,7 +18,13 @@ export default App;
 
 function Routes() {
   return useRoutes([
-    { path: "/upload-logo/:userPhoneNumber", element: <UploadLogoPage /> },
-    { path: "*", element: <NotFoundPage /> },
+    {
+      path: "/upload-logo/:userPhoneNumber",
+      element: <UploadLogoPage />,
+    },
+    {
+      path: "*",
+      element: <NotFoundPage />,
+    },
   ]);
 }
