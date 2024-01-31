@@ -112,7 +112,7 @@ const UploadLogoForm = ({ onSubmit }: Props) => {
             disabled={isSubmitting}
           >
             {isSubmitting && <span className="loader" />}
-            UPLOAD
+            {isSubmitting ? "Uploading..." : "Upload"}
           </button>
         )}
       </form>
