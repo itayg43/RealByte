@@ -9,7 +9,7 @@ const ALLOWED_FILE_TYPES = [
   "image/png",
   "application/pdf",
 ];
-const MAX_FILE_SIZE_IN_MB = 12;
+const MAX_FILE_SIZE_IN_MB = 15;
 const MAX_FILE_SIZE_IN_BYTES = MAX_FILE_SIZE_IN_MB * 1024 * 1024;
 
 const validationSchema = z.object({
@@ -63,21 +63,21 @@ const UploadLogoForm = ({ onSubmit }: Props) => {
 
   const renderFilePreview = useCallback(() => {
     if (selectedFile && selectedFile[0]) {
+      const src = URL.createObjectURL(selectedFile[0]);
+      const description = "selected file preview";
+
       return selectedFile[0].type.includes("image") ? (
-        <img
-          className="image-file-preview"
-          src={URL.createObjectURL(selectedFile[0])}
-          alt="selected file preview"
-        />
+        <img className="image-file-preview" src={src} alt={description} />
       ) : (
         <iframe
           style={{
             width: "100%",
+            height: 300,
             borderRadius: 10,
             marginBottom: 10,
           }}
-          src={URL.createObjectURL(selectedFile[0])}
-          title="selected file preview"
+          src={src}
+          title={description}
         />
       );
     }
