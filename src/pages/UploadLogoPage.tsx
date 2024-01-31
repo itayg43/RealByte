@@ -14,7 +14,7 @@ const UploadLogoPage = () => {
 
   const [uploadStatus, setUploadStatus] = useState<RequestStatus>("idle");
 
-  const handleSubmit = async (inputs: UploadLogoFormInputs) => {
+  const handleUpload = async (inputs: UploadLogoFormInputs) => {
     if (userPhoneNumber === undefined) return;
 
     try {
@@ -35,7 +35,7 @@ const UploadLogoPage = () => {
           Upload succeeded! You will be redirected to WhatsApp shortly...
         </p>
       ) : (
-        <UploadLogoForm onSubmit={handleSubmit} />
+        <UploadLogoForm onSubmit={handleUpload} />
       )}
     </>
   );
