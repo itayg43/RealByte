@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useCallback } from "react";
 
 const ALLOWED_FILE_TYPES = [
   "image/jpeg",
@@ -61,31 +60,11 @@ const UploadLogoForm = ({ onSubmit }: Props) => {
 
   const selectedFile = watch("file");
 
-  const renderFilePreview = useCallback(() => {
-    if (selectedFile && selectedFile[0]) {
-      const src = URL.createObjectURL(selectedFile[0]);
-      const description = "selected file preview";
-
-      return selectedFile[0].type.includes("image") ? (
-        <img className="image-file-preview" src={src} alt={description} />
-      ) : (
-        <iframe
-          style={{
-            width: "100%",
-            height: 300,
-            borderRadius: 10,
-            marginBottom: 10,
-          }}
-          src={src}
-          title={description}
-        />
-      );
-    }
-  }, [selectedFile]);
-
   return (
     <>
-      {renderFilePreview()}
+      {selectedFile && selectedFile[0] && (
+        <FilePreview file={selectedFile[0]} />
+      )}
 
       <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
         <fieldset>
@@ -121,3 +100,27 @@ const UploadLogoForm = ({ onSubmit }: Props) => {
 };
 
 export default UploadLogoForm;
+
+type FilePreviewProps = {
+  file: File;
+};
+
+const FilePreview = ({ file }: FilePreviewProps) => {
+  const src = URL.createObjectURL(file);
+  const description = "file preview";
+
+  return file.type.includes("image") ? (
+    <img className="image-file-preview" src={src} alt={description} />
+  ) : (
+    <iframe
+      style={{
+        width: "100%",
+        height: 300,
+        borderRadius: 10,
+        marginBottom: 10,
+      }}
+      src={src}
+      title={description}
+    />
+  );
+};
