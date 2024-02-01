@@ -14,12 +14,12 @@ const UploadLogoPage = () => {
 
   const [uploadStatus, setUploadStatus] = useState<RequestStatus>("idle");
 
-  const handleUpload = async (inputs: UploadLogoFormInputs) => {
+  const handleUpload = async (formInputs: UploadLogoFormInputs) => {
     if (userPhoneNumber === undefined) return;
 
     try {
       setUploadStatus("loading");
-      await apiService.uploadLogo(userPhoneNumber, inputs.file[0]);
+      await apiService.uploadLogo(userPhoneNumber, formInputs);
       setTimeout(redirectToWhatsapp, REDIRECT_DELAY_IN_MILLIS);
       setUploadStatus("succeeded");
     } catch (error: any) {

@@ -1,10 +1,14 @@
 import apiClient, { formDataConfig, ApiRoute } from "../clients/apiClient";
+import { UploadLogoFormInputs } from "../components/forms/UploadLogoForm";
 
-const uploadLogo = async (userPhoneNumber: string, logo: File) => {
+const uploadLogo = async (
+  userPhoneNumber: string,
+  formInputs: UploadLogoFormInputs
+) => {
   try {
     const formData = new FormData();
     formData.append("phoneNumber", userPhoneNumber);
-    formData.append("file", logo, logo.name);
+    formData.append("file", formInputs.file, formInputs.file.name);
 
     await apiClient.post(ApiRoute.uploadLogo, formData, formDataConfig);
   } catch (error) {

@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
+import FormFileInput from "./FormFileInput";
+
 const ALLOWED_FILE_TYPES = [
   "image/jpeg",
   "image/jpg",
@@ -12,18 +14,10 @@ const MAX_FILE_SIZE_IN_MB = 15;
 const MAX_FILE_SIZE_IN_BYTES = MAX_FILE_SIZE_IN_MB * 1024 * 1024;
 
 const validationSchema = z.object({
-  file: z.custom<FileList>().superRefine((fileList, ctx) => {
-    if (fileList.length === 0) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Required",
-      });
-      return;
-    }
+  file: z.custom<File>().superRefine((file, ctx) => {
+    if (file === undefined) return;
 
-    const f = fileList[0];
-
-    if (ALLOWED_FILE_TYPES.includes(f.type) === false) {
+    if (ALLOWED_FILE_TYPES.includes(file.type) === false) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Only JPEG, JPG, PNG, and PDF files are allowed",
@@ -31,7 +25,7 @@ const validationSchema = z.object({
       return;
     }
 
-    if (f.size > MAX_FILE_SIZE_IN_BYTES) {
+    if (file.size > MAX_FILE_SIZE_IN_BYTES) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: `File size is limited to ${MAX_FILE_SIZE_IN_MB}MB`,
@@ -44,15 +38,15 @@ const validationSchema = z.object({
 export type UploadLogoFormInputs = z.infer<typeof validationSchema>;
 
 type Props = {
-  onSubmit: (inputs: UploadLogoFormInputs) => {};
+  onSubmit: (formInputs: UploadLogoFormInputs) => Promise<void>;
 };
 
 const UploadLogoForm = ({ onSubmit }: Props) => {
   const {
-    register,
+    control,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting, isValid },
+    formState: { isSubmitting, isValid },
   } = useForm<UploadLogoFormInputs>({
     resolver: zodResolver(validationSchema),
     mode: "onChange",
@@ -62,29 +56,17 @@ const UploadLogoForm = ({ onSubmit }: Props) => {
 
   return (
     <>
-      {selectedFile && selectedFile[0] && (
-        <FilePreview file={selectedFile[0]} />
-      )}
+      {selectedFile && <FilePreview file={selectedFile} />}
 
       <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
-        <fieldset>
-          <label htmlFor="file-input" className="file-input">
-            {selectedFile && selectedFile[0] ? "Change Logo" : "Select Logo"}
-          </label>
+        <FormFileInput<UploadLogoFormInputs>
+          control={control}
+          name="file"
+          label={selectedFile ? "Change Logo" : "Select Logo"}
+          accept={ALLOWED_FILE_TYPES}
+        />
 
-          <input
-            id="file-input"
-            type="file"
-            accept={ALLOWED_FILE_TYPES.join(", ")}
-            {...register("file")}
-          />
-
-          {errors.file && errors.file.message && (
-            <p className="error-message">{errors.file.message}</p>
-          )}
-        </fieldset>
-
-        {isValid && (
+        {isValid && selectedFile && (
           <button
             className="btn btn-blue"
             type="submit"
